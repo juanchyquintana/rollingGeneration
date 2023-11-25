@@ -29,23 +29,95 @@
         data-bs-theme="dark"
       >
         <div class="container d-flex justify-content-center">
-          <a
-            class="navbar-brand align-text-center fw-bold text-uppercase"
-            href="./index.html"
-          >
-            <img
-              src="./assets/logo.png"
-              alt="Logo"
-              class="d-inline-block align-text-center widthLogo"
-            />
-
-            Rolling Generation</a
+          <img
+            src="./assets/logo.png"
+            alt="Logo"
+            class="d-inline-block widthLogo img-fluid"
+          />
+          <a class="navbar-brand fw-bold text-uppercase" href="./index.html"
+            >Rolling Generation</a
           >
         </div>
       </nav>
     </header>
 
-    <main class="bg-body-tertiary"></main>
+    <main class="bg-body-tertiary">
+      <section
+        class="container my-5 bg-white p-4 rounded-2 shadow"
+        id="seccionPrincipal"
+      >
+        <form id="formGeneracion">
+          <div id="zoneAlerta"></div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre Completo</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              placeholder="Ej: Juan Diego Quintana"
+              minlength="4"
+              maxlength="60"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="edadPersona" class="form-label">Edad</label>
+            <input
+              type="number"
+              class="form-control"
+              id="edadPersona"
+              placeholder="Introduce tu edad"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="dni" class="form-label">D.N.I</label>
+            <input
+              type="number"
+              class="form-control"
+              id="dni"
+              placeholder="Introduce tu número de documento"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="sexo" class="form-label">Sexo</label>
+            <select class="form-control" id="sexo">
+              <option value="" hidden>-- Seleccione una Opción --</option>
+              <option value="masculino">Masculino</option>
+              <option value="femenino">Femenino</option>
+              <option value="binario">Binario</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="fechaNacimiento" class="form-label"
+              >Fecha de Nacimiento</label
+            >
+            <input
+              type="date"
+              class="form-control"
+              id="fechaNacimiento"
+              placeholder="Introduce tu número de documento"
+            />
+          </div>
+
+          <div id="errorFormulario"></div>
+
+          <div
+            class="d-flex justify-content-center"
+          >
+            <button
+              type="submit"
+              class="btn btn-success text-uppercase fw-bold my-2 w-100"
+            >
+            Mostrar Generación
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
 
     <footer class="bg-dark border-bottom border-body p-3" data-bs-theme="dark">
       <p class="text-white text-center text-uppercase">
