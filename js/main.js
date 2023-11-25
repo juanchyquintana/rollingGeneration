@@ -34,7 +34,7 @@ class Persona {
     const mostrarGeneracion = document.createElement("div");
     mostrarGeneracion.className = "d-flex flex-column justify-content-center";
     mostrarGeneracion.innerHTML = `
-        <div class="d-flex flex-column justify-content-center">
+        <div class="d-flex flex-column justify-content-center" id="mostrarGeneracion">
           <h2 class="fw-bold text-uppercase text-center">Rolling Prediction - Conozca su Generación</h2>
 
             <div class="container text-center">
@@ -65,6 +65,8 @@ class Persona {
                 <p class="fs-4 fw-bold text-uppercase text-success">- Hola ${this.nombre} -</p>
                 <p class="text-uppercase fw-bold ">Eres mayor de edad (${this.edad})</p>
             </div>
+
+            <a class="btn btn-success mt-2 text-uppercase lead" href="../index.html">Volver al Inicio</a>
           </div>
         `;
       seccionPrincipal.appendChild(mayorEdad);
@@ -103,9 +105,11 @@ class Persona {
                   <li><span class="fw-bolder">Edad:</span> ${this.edad}</li>
                   <li><span class="fw-bolder">D.N.I:</span> ${this.dni}</li>
                   <li><span class="fw-bolder">Sexo:</span> ${this.sexo}</li>
-                  <li><span class="fw-bolder">Fecha></span> Nacimiento: ${this.anoNacimiento}</li>
+                  <li><span class="fw-bolder">Fecha:</span> Nacimiento: ${this.anoNacimiento}</li>
                 </ul>
             </div>
+
+            <a class="btn btn-success mt-2 text-uppercase lead" href="../index.html">Volver al Inicio</a>
           </div>
         `;
     seccionPrincipal.appendChild(divResultado);
@@ -124,29 +128,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const formulario = document.querySelector("#formGeneracion");
   const zonaAlerta = document.querySelector("#zoneAlerta");
   const btnSubmit = document.querySelector('#formGeneracion button[type="submit"]');
-  const btnEdad = document.querySelector('#consultarEdad')
-  const btnDatos = document.querySelector('#consultarDatos')
 
   // Eventos del Formulario
   formulario.addEventListener("submit", (e) => {
     e.preventDefault();
+    
+    const fechaNacimiento = new Date(nacimiento.value);
+    const anoNacimiento = fechaNacimiento.getFullYear();
+
+    const consultor = new Persona(
+      nombre.value,
+      edad.value,
+      dni.value,
+      sexo.value,
+      anoNacimiento
+    );
+
+    const restriccionEdad = /^\d+$/;
+    const restriccionDNI = /^\d{8}$/;
 
     if (
       nombre.value.trim() === "" ||
-      edad.value.trim() === "" ||
-      dni.value.trim() === "" ||
+      !restriccionEdad.test(edad.value) ||
+      !restriccionDNI.test(dni.value) ||
       sexo.value.trim() === "" ||
       nacimiento.value.trim() === ""
     ) {
       mostrarAlerta();
     } else if (btnSubmit.innerHTML.includes("Mostrar Generación")) {
-      const persona = new Persona(
-        nombre.value,
-        edad.value,
-        dni.value,
-        sexo.value,
-        nacimiento.value
-      );
+      const persona = consultor
 
       formulario.className = "d-none";
 
@@ -156,6 +166,24 @@ document.addEventListener("DOMContentLoaded", function () {
       alert.className = "d-none";
       alert.innerHTML = "";
     }
+
+    const esMayorMenor = () => {
+      const mostrarGene = document.querySelector('#mostrarGeneracion')
+      mostrarGene.className = "d-none"
+      consultor.esMayorDeEdad()
+    }
+
+    const datosMostrar = () => {
+      const mostrarGene = document.querySelector('#mostrarGeneracion')
+      mostrarGene.className = "d-none"
+      consultor.mostrarDatos()
+    }
+
+    const btnEdad = document.querySelector('#consultarEdad')
+    btnEdad.addEventListener("click", esMayorMenor)
+
+    const btnDatos = document.querySelector('#consultarDatos')
+    btnDatos.addEventListener("click", datosMostrar)
   });
 
   // Funciones
