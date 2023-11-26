@@ -37,9 +37,11 @@ class Persona {
         <div class="d-flex flex-column justify-content-center" id="mostrarGeneracion">
           <h2 class="fw-bold text-uppercase text-center">Rolling Prediction - Conozca su Generación</h2>
 
+          <div class="border border-bottom border-black my-2"></div>
+
             <div class="container text-center">
               <p class="fs-4 fw-bold text-uppercase text-success">- Hola ${this.nombre} -</p>
-              <p class="text-uppercase fw-bold ">Te queriamos informar que perteneces a la ${generacion} y su rasgo caracteristico es ${rasgos}</p>
+              <p class="text-uppercase fw-bold ">Te queriamos informar que perteneces a la <span class="text-danger">${generacion}</span> y su rasgo caracteristico es <span class="text-danger">${rasgos}</span></p>
           </div>
 
           <div class="d-flex flex-column justify-content-center gap-2">
@@ -60,6 +62,8 @@ class Persona {
       mayorEdad.innerHTML = `
           <div class="d-flex flex-column justify-content-center">
             <h2 class="fw-bold text-uppercase text-center">Rolling Prediction - Conozca su Generación</h2>
+
+            <div class="border border-bottom border-black my-2"></div>
 
               <div class="container text-center">
                 <p class="fs-4 fw-bold text-uppercase text-success">- Hola ${this.nombre} -</p>
@@ -96,16 +100,18 @@ class Persona {
           <div class="d-flex flex-column justify-content-center">
             <h2 class="fw-bold text-uppercase text-center">Rolling Prediction - Conozca su Generación</h2>
 
+            <div class="border border-bottom border-black my-2"></div>
+
               <div class="container text-center">
                 <p class="fs-4 fw-bold text-uppercase text-success">- Hola ${this.nombre} -</p>
-                <p class="text-uppercase fw-bold ">Estos son todos su datos:</p>
+                <p class="text-uppercase fw-bold ">Estos son sus datos:</p>
 
                 <ul class="list-unstyled">
                   <li><span class="fw-bolder">Nombre:</span> ${this.nombre}</li>
                   <li><span class="fw-bolder">Edad:</span> ${this.edad}</li>
                   <li><span class="fw-bolder">D.N.I:</span> ${this.dni}</li>
                   <li><span class="fw-bolder">Sexo:</span> ${this.sexo}</li>
-                  <li><span class="fw-bolder">Fecha:</span> Nacimiento: ${this.anoNacimiento}</li>
+                  <li><span class="fw-bolder">Fecha:</span> ${this.anoNacimiento}</li>
                 </ul>
             </div>
 
@@ -147,15 +153,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const restriccionEdad = /^\d+$/;
     const restriccionDNI = /^\d{8}$/;
 
+
+    if(!restriccionEdad.test(edad.value) || !restriccionDNI.test(dni.value) ) {
+      alertaDniEdad()
+    } else {
+      eliminarAlertaDniEdad()
+    }
+
     if (
       nombre.value.trim() === "" ||
-      !restriccionEdad.test(edad.value) ||
-      !restriccionDNI.test(dni.value) ||
       sexo.value.trim() === "" ||
       nacimiento.value.trim() === ""
     ) {
       mostrarAlerta();
-    } else if (btnSubmit.innerHTML.includes("Mostrar Generación")) {
+    }else if (btnSubmit.innerHTML.includes("Mostrar Generación")) {
       const persona = consultor
 
       formulario.className = "d-none";
@@ -188,6 +199,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Funciones
   let alertaMostrada = false;
+  let alertaDni = false
+
   const mostrarAlerta = () => {
     if (!alertaMostrada) {
       const alert = document.createElement("div");
@@ -201,6 +214,33 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
       zonaAlerta.appendChild(alert);
       alertaMostrada = true;
+    }
+  };
+
+  const alertaDniEdad = () => {
+    if(!alertaDni) {
+      const alertDniEdad = document.createElement("div");
+      alertDniEdad.id = "alertaFormulario";
+      alertDniEdad.className = "d-flex flex-column justify-content-center";
+      alertDniEdad.innerHTML = `        
+      <div class="d-flex flex-column justify-content-center">
+          <p class="text-white text-center fw-bold bg-danger rounded mt-2 shadow"
+            id="dniAlert"
+          >El DNI o su Edad es erronea. Complete todo, por favor.</p>
+      </div>
+  
+      `;
+      zonaAlerta.appendChild(alertDniEdad);
+      alertaDni = true;
+    }
+  }
+
+  const eliminarAlertaDniEdad = () => {
+    const alertaFormulario = document.getElementById("alertaFormulario");
+  
+    if (alertaFormulario) {
+      alertaFormulario.remove();
+      alertaDni = false; 
     }
   };
 });
